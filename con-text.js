@@ -1,4 +1,7 @@
 
+var _evalExpression = require('./eval');
+var interpolateProcessor = require('./interpolate-processor');
+
 module.exports = function textContext (context) {
   var filter_definitions = {};
 
@@ -12,24 +15,6 @@ module.exports = function textContext (context) {
     if( !filter_definitions[name] ) throw new Error('filter \'' + name + '\' is not defined');
 
     return filter_definitions[name](input, scope);
-  }
-
-  function _evalExpression (expression) {
-    var execExpression = new Function('scope', 'with(scope) { return (' + expression + '); };');
-    return function (scope) {
-      scope = scope || {};
-      try {
-        return execExpression(scope);
-      } catch(err) {
-        // console.log('ReferenceError', err, err instanceof ReferenceError);
-        if( err instanceof ReferenceError ) {
-          scope = Object.create(scope);
-          scope[err.message.substr(0, err.message.length - 15) ] = null;
-          return execExpression(scope);
-        }
-        return '';
-      }
-    };
   }
 
   function evalFilter (filter_key) {
@@ -65,8 +50,6 @@ module.exports = function textContext (context) {
   }
 
   function evalExpression (expression) {
-    if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
-
     var filters_list = expression.split(' | '),
         getValue = _evalExpression( filters_list.shift() ),
         processFilters = evalFilters(filters_list);
@@ -79,20 +62,7 @@ module.exports = function textContext (context) {
     };
   }
 
-  function interpolateText (text) {
-    var texts = text.split(/{{.*?}}/),
-        expressions = ( text.match(/{{.*?}}/g) ||[] ).map(function (expression) {
-          return evalExpression( expression.replace(/^{{|}}$/g, '') );
-        });
-
-    return function (scope) {
-      return texts.reduce(function (result, text, i) {
-        return result + text + ( expressions[i] ? expressions[i](scope) : '' );
-      }, '');
-    };
-  }
-
-  context.interpolate = interpolateText;
+  context.interpolate = interpolateProcessor(evalExpression);
   context.eval = evalExpression;
   context.defineFilter = defineFilter;
   context.processFilter = processFilter;

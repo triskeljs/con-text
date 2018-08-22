@@ -1,6 +1,6 @@
 /* global describe, it */
 
-var conText = require('../lib/con-text'),
+var conText = require('../con-text'),
     TEXT = conText(),
     alt_TEXT = conText(),
     assert = require('assert');

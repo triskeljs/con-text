@@ -1,6 +1,6 @@
 /* global describe, it */
 
-var conText = require('../lib/con-text'),
+var conText = require('../con-text'),
     TEXT = conText(),
     assert = require('assert');
 
@@ -10,52 +10,6 @@ TEXT.defineFilter('foo', function (input) {
 
 TEXT.defineFilter('bar', function (input) {
   return 'bar: ' + input;
-});
-
-describe('eval no filters', function () {
-
-  var getFooBar = TEXT.eval('foo.bar');
-
-  it('get foobar', function () {
-
-    assert.deepEqual( getFooBar({ foo: { bar: 'foobar' } }), 'foobar' );
-
-  });
-
-  it('ReferenceError €', function () {
-
-    assert.strictEqual( TEXT.eval(' symbol || \'€\' ')(), '€' );
-
-  });
-
-});
-
-describe('eval TypeError', function () {
-
-  it('throws Error', function () {
-
-    assert.throws(function() { TEXT.eval(15); }, Error, 'Number');
-    assert.throws(function() { TEXT.eval([]); }, Error, 'Array');
-    assert.throws(function() { TEXT.eval(null); }, Error, 'null');
-
-  });
-
-  it('throws TypeError', function () {
-
-    assert.throws(function() { TEXT.eval(15); }, TypeError, 'Number');
-    assert.throws(function() { TEXT.eval([]); }, TypeError, 'Array');
-    assert.throws(function() { TEXT.eval(null); }, TypeError, 'null');
-
-  });
-
-  it('err.message', function () {
-
-    assert.throws(function() { TEXT.eval(15); }, /expression should be a String/, 'Number');
-    assert.throws(function() { TEXT.eval([]); }, /expression should be a String/, 'Array');
-    assert.throws(function() { TEXT.eval(null); }, /expression should be a String/, 'null');
-
-  });
-
 });
 
 describe('eval 1 filter', function () {

@@ -5,7 +5,9 @@ install:
 	npm install
 
 eslint:
-	$(shell npm bin)/eslint lib
+	$(shell npm bin)/eslint eval.js
+	$(shell npm bin)/eslint interpolate-processor.js
+	$(shell npm bin)/eslint con-text.js
 	$(shell npm bin)/eslint tests
 
 test: install eslint
