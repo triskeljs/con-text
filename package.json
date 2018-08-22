@@ -1,0 +1,25 @@
+{
+  "name": "con-text",
+  "version": "0.1.0",
+  "description": "Text processing with context definitions",
+  "main": "con-text.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kiltjs/con-text.git"
+  },
+  "keywords": [
+    "html",
+    "parser",
+    "renderer",
+    "minifier"
+  ],
+  "author": "Jesús Germade <jesus@germade.es>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kiltjs/con-text/issues"
+  },
+  "homepage": "https://github.com/kiltjs/con-text#readme"
+}
