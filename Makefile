@@ -20,13 +20,7 @@ npm.version:
 
 npm.publish: export PKG_VERSION=$(shell node -e "console.log('v'+require('./package.json').version);")
 npm.publish:
-	cp package.json lib
-	cp README.md lib
-	cp LICENSE lib
 	- cd lib && npm publish --access public
-	rm lib/package.json
-	rm lib/README.md
-	rm lib/LICENSE
 	@echo "published ${PKG_VERSION}"
 
 github.release: export PKG_NAME=$(shell node -e "console.log(require('./package.json').name);")
