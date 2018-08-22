@@ -1,5 +1,5 @@
 # con-text
 
 ``` sh
-npm install -D @kilt/con-text
+npm install -D @trisquel/con-text
 ```
