@@ -34,7 +34,7 @@ TEXT.eval(' foo ? foo : 'bar' ', { foo: false });
 ``` js
 
 TEXT.defineFilter('amount', function (amount) {
-	return parseInt(amount) + ',' + amount%100;
+  return parseInt(amount) + ',' + amount%100;
 });
 
 TEXT.eval(' price | amount ', { price: 12345 });
@@ -43,7 +43,7 @@ TEXT.eval(' price | amount ', { price: 12345 });
 //---
 
 TEXT.defineFilter('title', function (input_text) {
-	return 'title: ' + input_text;
+  return 'title: ' + input_text;
 });
 
 TEXT.eval(' foo | title ', { foo: 'bar' });
@@ -57,7 +57,7 @@ TEXT.eval(' foo | title ', { foo: 'foobar' });
 ### Interpolating text
 
 TEXT.defineFilter('amount', function (amount) {
-	return parseInt(amount) + ',' + amount%100;
+  return parseInt(amount) + ',' + amount%100;
 });
 
 ``` js
