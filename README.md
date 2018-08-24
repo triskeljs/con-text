@@ -40,7 +40,7 @@ TEXT.defineFilter('amount', function (amount) {
 TEXT.eval(' price | amount ', { price: 12345 });
 // results: '123,45'
 
-//---
+/* ----------------------- */
 
 TEXT.defineFilter('title', function (input_text) {
   return 'title: ' + input_text;
