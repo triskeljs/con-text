@@ -1,18 +1,18 @@
-# @trisquel/con-text
+# @triskel/con-text
 
 [![ᴋɪʟᴛ ᴊs](https://jesus.germade.es/assets/images/badge-kiltjs.svg)](https://github.com/kiltjs)
-[![npm](https://img.shields.io/npm/v/@trisquel/con-text.svg?maxAge=3600)](https://www.npmjs.com/package/@trisquel/con-text)
-[![Build Status](https://travis-ci.org/kiltjs/trisquel-con-text.svg?branch=master)](https://travis-ci.org/kiltjs/trisquel-con-text)
+[![npm](https://img.shields.io/npm/v/@triskel/con-text.svg?maxAge=3600)](https://www.npmjs.com/package/@triskel/con-text)
+[![Build Status](https://travis-ci.org/kiltjs/triskel-con-text.svg?branch=master)](https://travis-ci.org/kiltjs/triskel-con-text)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ``` sh
-npm install -D @trisquel/con-text
+npm install -D @triskel/con-text
 ```
 
 ## Examples
 
 ``` js
-import createConText from '@trisquel/con-text';
+import createConText from '@triskel/con-text';
 
 var TEXT = createConText();
 ```
