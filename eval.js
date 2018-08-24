@@ -1,9 +1,10 @@
 
-module.exports = function _evalExpression (expression) {
+module.exports = function _evalExpression (expression, _scope) {
   if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
   
   var execExpression = new Function('scope', 'with(scope) { return (' + expression + '); };');
-  return function (scope) {
+   
+   function evalGetter (scope) {
     scope = scope || {};
     try {
       return execExpression(scope);
@@ -16,5 +17,9 @@ module.exports = function _evalExpression (expression) {
       }
       return '';
     }
-  };
+  }
+
+  if( _scope === undefined ) return evalGetter;
+
+  return evalGetter(_scope);
 };

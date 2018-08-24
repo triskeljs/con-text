@@ -49,21 +49,40 @@ module.exports = function textContext (context) {
     };
   }
 
-  function evalExpression (expression) {
-    var filters_list = expression.split(' | '),
-        getValue = _evalExpression( filters_list.shift() ),
-        processFilters = evalFilters(filters_list);
+  function parseExpression ( expression ) {
+    var filters_list = expression.split(' | ');
+    
+    expression = filters_list.shift();
 
-    if( !filters_list.length ) return getValue;
-
-    return function (scope, filters_scope) {
-      scope = scope || {};
-      return processFilters( getValue(scope), filters_scope || scope );
+    return {
+      expression: expression,
+      has_filters: filters_list.length > 0,
+      processFilters: evalFilters(filters_list),
     };
   }
 
+  function evalExpression (expression, _scope, _filters_scope) {
+    var parsed = parseExpression(expression),
+        getValue = _evalExpression( parsed.expression ),
+        processFilters = parsed.processFilters;
+
+    if( _scope === undefined ) {
+      if( !parsed.has_filters ) return getValue;
+
+      return function (scope, filters_scope) {
+        scope = scope || {};
+        return processFilters( getValue(scope), filters_scope || scope );
+      };
+    }
+
+    return processFilters( getValue(_scope), _filters_scope || _scope );
+  }
+
   context.interpolate = interpolateProcessor(evalExpression);
+
   context.eval = evalExpression;
+  context.parseExpression = parseExpression;
+
   context.defineFilter = defineFilter;
   context.processFilter = processFilter;
 

@@ -12,9 +12,18 @@ TEXT.defineFilter('bar', function (input) {
   return 'bar: ' + input;
 });
 
+describe('eval README example', function () {
+
+  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ')({ foo: 'foobar' }), 'foobar' );
+
+  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' );
+
+});
+
 describe('eval 1 filter', function () {
 
-  var expressions = {
+  var expression,
+      expressions = {
         ' foo.bar | foo ': {
           result_1: 'foo: foobar',
         },
@@ -33,8 +42,16 @@ describe('eval 1 filter', function () {
         bar: { foo: 'barfoo' },
       };
 
-  for( var expression in expressions ) {
-    it(expression, function () {
+  for( expression in expressions ) {
+    it('eval(expression, data): ' + expression, function () {
+
+      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 );
+
+    });
+  }
+  
+  for( expression in expressions ) {
+    it('eval(expression)(data): ' + expression, function () {
 
       var evalGetter = TEXT.eval(expression);
 
@@ -47,7 +64,8 @@ describe('eval 1 filter', function () {
 
 describe('eval 2 filters', function () {
 
-  var expressions = {
+  var expression,
+      expressions = {
         ' foo.bar | foo | foo': {
           result_1: 'foo: foo: foobar',
         },
@@ -78,8 +96,16 @@ describe('eval 2 filters', function () {
         bar: { foo: 'barfoo' },
       };
 
-  for( var expression in expressions ) {
-    it(expression, function () {
+  for( expression in expressions ) {
+    it('eval(expression, data): ' + expression, function () {
+
+      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 );
+
+    });
+  }
+
+  for( expression in expressions ) {
+    it('eval(expression)(data): ' + expression, function () {
 
       var evalGetter = TEXT.eval(expression);
 
