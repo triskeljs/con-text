@@ -1,6 +1,6 @@
 
 function _getSymbol (err) {
-  if( /:/.test(err.message) ) return err.message.split(':').pop();
+  if( /:/.test(err.message) ) return err.message.split(/ *: */).pop().split(/ +/)[0];
   return err.message.split(/ +/)[0];
 }
 
