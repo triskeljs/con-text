@@ -1,7 +1,7 @@
 
 function _getSymbol (err) {
   if( /:/.test(err.message) ) return err.message.split(/ *: */).pop().split(/ +/)[0];
-  return err.message.split(/ +/)[0];
+  return (err.message.split(/ +/)[0] || '').replace(/^'|'$/g, '');
 }
 
 module.exports = function _evalExpression (expression, _scope) {
