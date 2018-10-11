@@ -1,11 +1,25 @@
 
+// https://stackoverflow.com/questions/1661197/what-characters-are-valid-for-javascript-variable-names/9337047#9337047
+
+var ecma_keywords = {};
+
+'break,case,catch,class,const,continue,debugger,default,delete,do,else,export,extends,finally,for,function,if,import,in,instanceof,new,return,super,switch,this,throw,try,typeof,var,void,while,with,yield'.split(',').forEach(function (key) {
+  ecma_keywords[key] = true;
+});
+
+var match_var = /[a-zA-Z_$][0-9a-zA-Z_$]+/g;
+
 function _evalExpression (expression) {
   var matches = [],
-      valid_keys = {};
+      valid_keys = Object.create(ecma_keywords);
 
   if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
 
-  (expression.replace(/'[^']'|"[^"]/g, '').match(/\.?[a-zA-Z]\w+/g) ||[]).forEach(function (key) {
+  ( expression
+      .replace(/'[^']'/g, '\'\'')
+      .replace(/"[^"]"/g, '""')
+      .match(match_var) || []
+  ).forEach(function (key) {
     if( key[0] === '.' || valid_keys[key] ) return;
 
     valid_keys[key] = true;
@@ -29,33 +43,3 @@ module.exports = function (expression, scope) {
 
   return _evalExpression(expression)(scope);
 };
-
-// function _getSymbol (err) {
-//   if( /:/.test(err.message) ) return err.message.split(/ *: */).pop().split(/ +/)[0];
-//   return (err.message.split(/ +/)[0] || '').replace(/^'|'$/g, '');
-// }
-//
-// module.exports = function _evalExpression (expression, _scope) {
-//   if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
-//
-//   var execExpression = new Function('scope', 'with(scope) { return (' + expression + '); };');
-//
-//    function evalGetter (scope) {
-//     scope = scope || {};
-//     try {
-//       return execExpression(scope);
-//     } catch(err) {
-//       // console.log('ReferenceError', err, err instanceof ReferenceError);
-//       if( err instanceof ReferenceError ) {
-//         scope = Object.create(scope);
-//         scope[_getSymbol(err)] = null;
-//         return execExpression(scope);
-//       }
-//       return '';
-//     }
-//   }
-//
-//   if( _scope === undefined ) return evalGetter;
-//
-//   return evalGetter(_scope);
-// };

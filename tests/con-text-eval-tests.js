@@ -18,6 +18,8 @@ describe('eval README example', function () {
 
   assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' );
 
+  assert.strictEqual( TEXT.eval(' $foo ? $foo : \'bar\' ', { $foo: 'foobar' }), 'foobar' );
+
 });
 
 describe('eval 1 filter', function () {
@@ -49,7 +51,7 @@ describe('eval 1 filter', function () {
 
     });
   }
-  
+
   for( expression in expressions ) {
     it('eval(expression)(data): ' + expression, function () {
 
