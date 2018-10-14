@@ -7,7 +7,7 @@ var ecma_keywords = {};
   ecma_keywords[key] = true;
 });
 
-var match_var = /[a-zA-Z_$][0-9a-zA-Z_$]+/g;
+var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]+/g;
 
 function _evalExpression (expression) {
   var matches = [],
