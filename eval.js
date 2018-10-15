@@ -9,9 +9,14 @@ var ecma_keywords = {};
 
 var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]+/g;
 
-function _evalExpression (expression) {
+function _evalExpression (expression, options) {
   var matches = [],
-      valid_keys = Object.create(ecma_keywords);
+      used_vars = Object.create(ecma_keywords);
+
+  options = options || {};
+  if( options.globals ) options.globals.forEach(function (key) {
+    used_vars[key] = true;
+  });
 
   if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
 
@@ -20,14 +25,14 @@ function _evalExpression (expression) {
       .replace(/""|"(.*?[^\\])"/g, '""')
       .match(match_var) || []
   ).forEach(function (key) {
-    if( key[0] === '.' || valid_keys[key] ) return;
+    if( key[0] === '.' || used_vars[key] ) return;
 
-    valid_keys[key] = true;
+    used_vars[key] = true;
 
     matches.push(key);
   });
 
-  valid_keys = null;
+  used_vars = null;
 
   var runExpression = Function.apply(null, matches.concat('return (' + expression + ');') );
 
@@ -38,8 +43,8 @@ function _evalExpression (expression) {
   };
 }
 
-module.exports = function (expression, scope) {
-  if( scope === undefined ) return _evalExpression(expression);
+module.exports = function (expression, scope, options) {
+  if( scope === undefined ) return _evalExpression(expression, options);
 
-  return _evalExpression(expression)(scope);
+  return _evalExpression(expression, options)(scope);
 };

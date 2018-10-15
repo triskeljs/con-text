@@ -48,3 +48,25 @@ describe('eval errors', function () {
   });
 
 });
+
+describe('globals triggering errors', function () {
+
+  it('no globals', function () {
+
+    var processExpression = evalExpression(' parseInt(\'32.5\') ', undefined);
+
+    assert.throws(function() { processExpression({}); }, TypeError, 'Number');
+
+    assert.strictEqual( processExpression({ parseInt: parseInt }), 32 );
+
+  });
+
+  it('using globals', function () {
+
+    var processExpression = evalExpression(' parseInt(\'32.5\') ', undefined, { globals: ['parseInt'] });
+
+    assert.strictEqual( processExpression({}), 32 );
+
+  });
+
+});
