@@ -16,8 +16,8 @@ function _evalExpression (expression) {
   if( typeof expression !== 'string' ) throw new TypeError('expression should be a String');
 
   ( expression
-      .replace(/'[^']+'/g, '\'\'')
-      .replace(/"[^"]+"/g, '""')
+      .replace(/''|'(.*?[^\\])'/g, '\'\'')
+      .replace(/""|"(.*?[^\\])"/g, '""')
       .match(match_var) || []
   ).forEach(function (key) {
     if( key[0] === '.' || valid_keys[key] ) return;
