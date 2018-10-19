@@ -39,7 +39,12 @@ function _evalExpression (expression, options) {
   return function (scope) {
     if( !scope ) scope = {};
 
-    return runExpression.apply(null, matches.map(function (key) { return scope[key]; }) );
+    try{
+      return runExpression.apply(null, matches.map(function (key) { return scope[key]; }) );
+    } catch(err){
+      console.error('error in expression: \'' + expression + '\''); // eslint-disable-line
+      throw err;
+    }
   };
 }
 
