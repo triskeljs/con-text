@@ -7,7 +7,7 @@ var ecma_keywords = {};
   ecma_keywords[key] = true;
 });
 
-var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]+:?/g;
+var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]*:?/g;
 
 function _evalExpression (expression, options) {
   var matches = [],
@@ -39,12 +39,7 @@ function _evalExpression (expression, options) {
   return function (scope) {
     if( !scope ) scope = {};
 
-    try{
-      return runExpression.apply(null, matches.map(function (key) { return scope[key]; }) );
-    } catch(err){
-      console.error('error in expression: \'' + expression + '\''); // eslint-disable-line
-      throw err;
-    }
+    return runExpression.apply(null, matches.map(function (key) { return scope[key]; }) );
   };
 }
 

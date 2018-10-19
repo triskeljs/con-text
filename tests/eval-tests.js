@@ -13,9 +13,21 @@ describe('eval no filters', function () {
 
   });
 
-  it('ReferenceError €', function () {
+  it('get €', function () {
 
     assert.strictEqual( evalExpression(' symbol || \'€\' ')(), '€' );
+
+  });
+
+  it('get d undefined', function () {
+
+    assert.strictEqual( evalExpression(' d ')(), undefined );
+
+  });
+
+  it('get d', function () {
+
+    assert.strictEqual( evalExpression(' d ')({ d: 'foo' }), 'foo' );
 
   });
 

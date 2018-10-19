@@ -51,7 +51,7 @@ module.exports = function textContext (context) {
 
   function parseExpression ( expression ) {
     var filters_list = expression.split(' | ');
-    
+
     expression = filters_list.shift();
 
     return {
@@ -71,7 +71,12 @@ module.exports = function textContext (context) {
 
       return function (scope, filters_scope) {
         scope = scope || {};
-        return processFilters( getValue(scope), filters_scope || scope );
+        try{
+          return processFilters( getValue(scope), filters_scope || scope );
+        } catch(err) {
+          console.error('error in expression: \'' + expression + '\''); // eslint-disable-line
+          throw err;
+        }
       };
     }
 
