@@ -7,7 +7,7 @@ var ecma_keywords = {};
   ecma_keywords[key] = true;
 });
 
-var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]*:?/g;
+var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]*( *:)?/g;
 
 function _evalExpression (expression, options) {
   var matches = [],
@@ -25,7 +25,7 @@ function _evalExpression (expression, options) {
       .replace(/""|"(.*?[^\\])"/g, '""')
       .match(match_var) || []
   ).forEach(function (key) {
-    if( key[0] === '.' || key.substr(-1) === ':' || used_vars[key] ) return;
+    if( key[0] === '.' || /:$/.test(key) || used_vars[key] ) return;
 
     used_vars[key] = true;
 
