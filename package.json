@@ -1,6 +1,6 @@
 {
   "name": "@triskel/con-text",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Text processing with context definitions",
   "main": "con-text.js",
   "scripts": {
