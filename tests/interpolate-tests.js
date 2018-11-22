@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
-    require('assert') : window.assert
+    require('chai').assert : window.assert
 
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../con-text') : window.conText

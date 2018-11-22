@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
-    require('assert') : window.assert
+    require('chai').assert : window.assert
 
 var evalExpression = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../eval') : window.evalExpression
@@ -40,25 +40,25 @@ describe('eval errors', function () {
 
   it('throws Error', function () {
 
-    assert.throws(function() { evalExpression(15) }, Error, 'Number')
-    assert.throws(function() { evalExpression([]) }, Error, 'Array')
-    assert.throws(function() { evalExpression(null) }, Error, 'null')
+    assert.throws(function() { evalExpression(15) }, Error, null, 'Number')
+    assert.throws(function() { evalExpression([]) }, Error, null, 'Array')
+    assert.throws(function() { evalExpression(null) }, Error, null, 'null')
 
   })
 
   it('throws TypeError', function () {
 
-    assert.throws(function() { evalExpression(15) }, TypeError, 'Number')
-    assert.throws(function() { evalExpression([]) }, TypeError, 'Array')
-    assert.throws(function() { evalExpression(null) }, TypeError, 'null')
+    assert.throws(function() { evalExpression(15) }, TypeError, null, 'Number')
+    assert.throws(function() { evalExpression([]) }, TypeError, null, 'Array')
+    assert.throws(function() { evalExpression(null) }, TypeError, null, 'null')
 
   })
 
   it('err.message', function () {
 
-    assert.throws(function() { evalExpression(15) }, /expression should be a String/, 'Number')
-    assert.throws(function() { evalExpression([]) }, /expression should be a String/, 'Array')
-    assert.throws(function() { evalExpression(null) }, /expression should be a String/, 'null')
+    assert.throws(function() { evalExpression(15) }, /expression should be a String/, null, 'Number')
+    assert.throws(function() { evalExpression([]) }, /expression should be a String/, null, 'Array')
+    assert.throws(function() { evalExpression(null) }, /expression should be a String/, null, 'null')
 
   })
 
@@ -70,7 +70,7 @@ describe('globals triggering errors', function () {
 
     var processExpression = evalExpression(' parseInt(\'32.5\') ', undefined)
 
-    assert.throws(function() { processExpression({}) }, TypeError, 'Number')
+    assert.throws(function() { processExpression({}) }, TypeError)
 
     assert.strictEqual( processExpression({ parseInt: parseInt }), 32 )
 

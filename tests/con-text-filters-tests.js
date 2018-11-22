@@ -1,7 +1,7 @@
 /* global describe, it */
 
 var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
-    require('assert') : window.assert
+    require('chai').assert : window.assert
 
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../con-text') : window.conText
@@ -21,13 +21,6 @@ function _fooBarConText () {
   })
 
   return _TEXT
-}
-
-function _assertErrorMessage (message, spec_text) {
-  return function (err) {
-    assert.strictEqual( err.message, message , spec_text || 'err.message')
-    return true
-  }
 }
 
 describe('define/process filters', function () {
@@ -94,14 +87,14 @@ describe('contexts are isolated', function () {
   it('filter missing: processFilter', function () {
 
     assert.throws(function () { alt_TEXT.processFilter('foo') }, Error)
-    assert.throws(function () { alt_TEXT.processFilter('foo') }, _assertErrorMessage('filter \'foo\' is not defined') )
+    assert.throws(function () { alt_TEXT.processFilter('foo') }, Error, 'filter \'foo\' is not defined' )
 
   })
 
   it('filter missing: evalFilter', function () {
 
     assert.throws(function () { alt_TEXT.evalFilter('foo')() }, Error)
-    assert.throws(function () { alt_TEXT.evalFilter('foo')() }, _assertErrorMessage('filter \'foo\' is not defined') )
+    assert.throws(function () { alt_TEXT.evalFilter('foo')() }, Error, 'filter \'foo\' is not defined' )
 
   })
 
@@ -109,16 +102,16 @@ describe('contexts are isolated', function () {
 
     assert.throws(function () { alt_TEXT.evalFilters(['foo', 'bar'])() }, Error)
 
-    assert.throws(function () { alt_TEXT.evalFilters(['foo', 'bar'])() }, _assertErrorMessage('filter \'foo\' is not defined') )
+    assert.throws(function () { alt_TEXT.evalFilters(['foo', 'bar'])() }, Error, 'filter \'foo\' is not defined' )
 
-    assert.throws(function () { alt_TEXT.evalFilters(['bar', 'foo'])() }, _assertErrorMessage('filter \'bar\' is not defined') )
+    assert.throws(function () { alt_TEXT.evalFilters(['bar', 'foo'])() }, Error, 'filter \'bar\' is not defined' )
 
   })
 
   it('filter missing: eval', function () {
 
     assert.throws(function () { alt_TEXT.eval('foo | bar')({ foo: 'bar' }) }, Error)
-    assert.throws(function () { alt_TEXT.eval('foo | bar')({ foo: 'bar' }) }, _assertErrorMessage('filter \'bar\' is not defined') )
+    assert.throws(function () { alt_TEXT.eval('foo | bar')({ foo: 'bar' }) }, Error, 'filter \'bar\' is not defined' )
 
   })
 
