@@ -1,26 +1,30 @@
-/* global describe, it */
+/* global window, describe, it */
 
-var conText = require('../con-text'),
-    TEXT = conText(),
-    assert = require('assert');
+var assert = typeof 'window' === 'object' ? // eslint-disable-line
+             window.assert : require('assert')
+
+var conText = typeof 'window' === 'object' ? // eslint-disable-line
+              window.conText : require('../con-text')
+
+var TEXT = conText()
 
 TEXT.defineFilter('foo', function (input) {
-  return 'foo: ' + input;
-});
+  return 'foo: ' + input
+})
 
 TEXT.defineFilter('bar', function (input) {
-  return 'bar: ' + input;
-});
+  return 'bar: ' + input
+})
 
 describe('eval README example', function () {
 
-  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ')({ foo: 'foobar' }), 'foobar' );
+  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ')({ foo: 'foobar' }), 'foobar' )
 
-  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' );
+  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' )
 
-  assert.strictEqual( TEXT.eval(' $foo ? $foo : \'bar\' ', { $foo: 'foobar' }), 'foobar' );
+  assert.strictEqual( TEXT.eval(' $foo ? $foo : \'bar\' ', { $foo: 'foobar' }), 'foobar' )
 
-});
+})
 
 describe('eval 1 filter', function () {
 
@@ -42,27 +46,27 @@ describe('eval 1 filter', function () {
       data = {
         foo: { bar: 'foobar' },
         bar: { foo: 'barfoo' },
-      };
+      }
 
   for( expression in expressions ) {
     it('eval(expression, data): ' + expression, function () {
 
-      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 );
+      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 )
 
-    });
+    })
   }
 
   for( expression in expressions ) {
     it('eval(expression)(data): ' + expression, function () {
 
-      var evalGetter = TEXT.eval(expression);
+      var evalGetter = TEXT.eval(expression)
 
-      assert.deepEqual( evalGetter(data), expressions[expression].result_1 );
+      assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
 
-    });
+    })
   }
 
-});
+})
 
 describe('eval 2 filters', function () {
 
@@ -96,39 +100,39 @@ describe('eval 2 filters', function () {
       data = {
         foo: { bar: 'foobar' },
         bar: { foo: 'barfoo' },
-      };
+      }
 
   for( expression in expressions ) {
     it('eval(expression, data): ' + expression, function () {
 
-      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 );
+      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 )
 
-    });
+    })
   }
 
   for( expression in expressions ) {
     it('eval(expression)(data): ' + expression, function () {
 
-      var evalGetter = TEXT.eval(expression);
+      var evalGetter = TEXT.eval(expression)
 
-      assert.deepEqual( evalGetter(data), expressions[expression].result_1 );
+      assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
 
-    });
+    })
   }
 
-});
+})
 
 TEXT.defineFilter('fooFirstName', function (input, user) {
-  return input + ': ' + user.first_name;
-});
+  return input + ': ' + user.first_name
+})
 
 TEXT.defineFilter('fooLastName', function (input, user) {
-  return input + ': ' + user.last_name;
-});
+  return input + ': ' + user.last_name
+})
 
 TEXT.defineFilter('fooFullName', function (input, user) {
-  return input + ': ' + user.first_name + ' ' + user.last_name;
-});
+  return input + ': ' + user.first_name + ' ' + user.last_name
+})
 
 describe('eval 1 filter with scope', function () {
 
@@ -150,19 +154,19 @@ describe('eval 1 filter with scope', function () {
       user = {
         first_name: 'John',
         last_name: 'Smith',
-      };
+      }
 
   for( var expression in expressions ) {
     it(expression, function () {
 
-      var evalGetter = TEXT.eval(expression);
+      var evalGetter = TEXT.eval(expression)
 
-      assert.deepEqual( evalGetter(data, { user: user }), expressions[expression].result_1 );
+      assert.deepEqual( evalGetter(data, { user: user }), expressions[expression].result_1 )
 
-    });
+    })
   }
 
-});
+})
 
 describe('eval 2 filters with scope', function () {
 
@@ -181,16 +185,16 @@ describe('eval 2 filters with scope', function () {
       user = {
         first_name: 'John',
         last_name: 'Smith',
-      };
+      }
 
   for( var expression in expressions ) {
     it(expression, function () {
 
-      var evalGetter = TEXT.eval(expression);
+      var evalGetter = TEXT.eval(expression)
 
-      assert.deepEqual( evalGetter(data, user), expressions[expression].result_1 );
+      assert.deepEqual( evalGetter(data, user), expressions[expression].result_1 )
 
-    });
+    })
   }
 
-});
+})

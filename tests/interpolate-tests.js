@@ -1,32 +1,38 @@
 /* global describe, it */
 
-var TEXT = require('../con-text')(),
-    interpolateProcessor = require('../interpolate-processor'),
-    assert = require('assert'),
+var assert = typeof 'window' === 'object' ? // eslint-disable-line
+    window.assert : require('assert')
+
+var conText = typeof 'window' === 'object' ? // eslint-disable-line
+    window.conText : require('../con-text')
+
+var TEXT = conText()
+
+var interpolateProcessor = require('../interpolate-processor'),
     fooProcessor = function () {
       return function (data) {
-        return 'foo: ' + data.foo;
-      };
+        return 'foo: ' + data.foo
+      }
     },
-    interpolateFoo = interpolateProcessor(fooProcessor);
+    interpolateFoo = interpolateProcessor(fooProcessor)
 
 describe('interpolate foo', function () {
 
   it('foo: bar', function () {
 
-    assert.strictEqual( interpolateFoo('pre_text {{ foo }} post_text', { foo: 'bar' }), 'pre_text foo: bar post_text' );
+    assert.strictEqual( interpolateFoo('pre_text {{ foo }} post_text', { foo: 'bar' }), 'pre_text foo: bar post_text' )
 
-  });
+  })
 
-});
+})
 
 TEXT.defineFilter('foo', function (input) {
-  return 'foo: ' + input;
-});
+  return 'foo: ' + input
+})
 
 TEXT.defineFilter('bar', function (input) {
-  return 'bar: ' + input;
-});
+  return 'bar: ' + input
+})
 
 var expression,
     expressions = {
@@ -46,26 +52,26 @@ var expression,
     data = {
       foo: { bar: 'foobar' },
       bar: { foo: 'barfoo' },
-    };
+    }
 
 describe('interpolate', function () {
 
     for( expression in expressions ) {
       it('interpolate(expression, data): ' + expression, function () {
 
-        assert.deepEqual( TEXT.interpolate(expression, data), expressions[expression].result_1 );
+        assert.deepEqual( TEXT.interpolate(expression, data), expressions[expression].result_1 )
 
-      });
+      })
     }
     
     for( expression in expressions ) {
       it('interpolate(expression)(data): ' + expression, function () {
 
-        var evalGetter = TEXT.interpolate(expression);
+        var evalGetter = TEXT.interpolate(expression)
 
-        assert.deepEqual( evalGetter(data), expressions[expression].result_1 );
+        assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
 
-      });
+      })
     }
 
-});
+})
