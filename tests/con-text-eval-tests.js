@@ -1,10 +1,10 @@
 /* global window, describe, it */
 
-var assert = typeof 'window' === 'object' ? // eslint-disable-line
-             window.assert : require('assert')
+var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
+    require('assert') : window.assert
 
-var conText = typeof 'window' === 'object' ? // eslint-disable-line
-              window.conText : require('../con-text')
+var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
+    require('../con-text') : window.conText
 
 var TEXT = conText()
 

@@ -1,10 +1,10 @@
 /* global describe, it */
 
-var assert = typeof 'window' === 'object' ? // eslint-disable-line
-    window.assert : require('assert')
+var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
+    require('assert') : window.assert
 
-var evalExpression = typeof 'window' === 'object' ? // eslint-disable-line
-    window.evalExpression : require('../eval')
+var evalExpression = typeof exports === 'object' && typeof module !== 'undefined' ?
+    require('../eval') : window.evalExpression
 
 describe('eval no filters', function () {
 
