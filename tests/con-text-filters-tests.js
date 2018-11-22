@@ -6,16 +6,22 @@ var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../con-text') : window.conText
 
-var TEXT = conText(),
-    alt_TEXT = conText()
+// var TEXT = conText(),
+//     alt_TEXT = conText()
 
-TEXT.defineFilter('foo', function (input) {
-  return 'foo: ' + input
-})
+function _fooBarConText () {
+  var _TEXT = conText()
 
-TEXT.defineFilter('bar', function (input) {
-  return 'bar: ' + input
-})
+  _TEXT.defineFilter('foo', function (input) {
+    return 'foo: ' + input
+  })
+  
+  _TEXT.defineFilter('bar', function (input) {
+    return 'bar: ' + input
+  })
+
+  return _TEXT
+}
 
 function _assertErrorMessage (message, spec_text) {
   return function (err) {
@@ -26,9 +32,11 @@ function _assertErrorMessage (message, spec_text) {
 
 describe('define/process filters', function () {
 
+  var _TEXT = _fooBarConText()
+
   it('foo filter', function () {
 
-    assert.strictEqual( TEXT.processFilter('foo', 'bar'), 'foo: bar' , '')
+    assert.strictEqual( _TEXT.processFilter('foo', 'bar'), 'foo: bar' , '')
 
   })
 
@@ -37,8 +45,10 @@ describe('define/process filters', function () {
 
 describe('eval filter', function () {
 
-  var fooFilter = TEXT.evalFilter('foo')
-  var barFilter = TEXT.evalFilter('bar')
+  var _TEXT = _fooBarConText()
+
+  var fooFilter = _TEXT.evalFilter('foo')
+  var barFilter = _TEXT.evalFilter('bar')
 
   it('foo filter', function () {
 
@@ -57,8 +67,10 @@ describe('eval filter', function () {
 
 describe('eval filters', function () {
 
-  var foobarFilter = TEXT.evalFilters(['foo', 'bar'])
-  var barfooFilter = TEXT.evalFilters(['bar', 'foo'])
+  var _TEXT = _fooBarConText()
+
+  var foobarFilter = _TEXT.evalFilters(['foo', 'bar'])
+  var barfooFilter = _TEXT.evalFilters(['bar', 'foo'])
 
   it('foobar filter', function () {
 
@@ -76,6 +88,8 @@ describe('eval filters', function () {
 })
 
 describe('contexts are isolated', function () {
+
+  var alt_TEXT = conText()
 
   it('filter missing: processFilter', function () {
 

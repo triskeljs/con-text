@@ -9,7 +9,19 @@ var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
 var interpolateProcessor = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../interpolate-processor') : window.interpolateProcessor
 
-var TEXT = conText()
+function _fooBarConText () {
+  var _TEXT = conText()
+
+  _TEXT.defineFilter('foo', function (input) {
+    return 'foo: ' + input
+  })
+  
+  _TEXT.defineFilter('bar', function (input) {
+    return 'bar: ' + input
+  })
+
+  return _TEXT
+}
 
 var fooProcessor = function () {
       return function (data) {
@@ -26,14 +38,6 @@ describe('interpolate foo', function () {
 
   })
 
-})
-
-TEXT.defineFilter('foo', function (input) {
-  return 'foo: ' + input
-})
-
-TEXT.defineFilter('bar', function (input) {
-  return 'bar: ' + input
 })
 
 var expression,
@@ -58,22 +62,24 @@ var expression,
 
 describe('interpolate', function () {
 
-    for( expression in expressions ) {
-      it('interpolate(expression, data): ' + expression, function () {
+  var _TEST = _fooBarConText()
 
-        assert.deepEqual( TEXT.interpolate(expression, data), expressions[expression].result_1 )
+  for( expression in expressions ) {
+    it('interpolate(expression, data): ' + expression, function () {
 
-      })
-    }
-    
-    for( expression in expressions ) {
-      it('interpolate(expression)(data): ' + expression, function () {
+      assert.deepEqual( _TEST.interpolate(expression, data), expressions[expression].result_1 )
 
-        var evalGetter = TEXT.interpolate(expression)
+    })
+  }
+  
+  for( expression in expressions ) {
+    it('interpolate(expression)(data): ' + expression, function () {
 
-        assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
+      var evalGetter = _TEST.interpolate(expression)
 
-      })
-    }
+      assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
+
+    })
+  }
 
 })

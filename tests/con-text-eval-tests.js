@@ -6,27 +6,37 @@ var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../con-text') : window.conText
 
-var TEXT = conText()
+// TEXT.defineFilter('foo', function (input) {
+//   return 'foo: ' + input
+// })
 
-TEXT.defineFilter('foo', function (input) {
-  return 'foo: ' + input
-})
-
-TEXT.defineFilter('bar', function (input) {
-  return 'bar: ' + input
-})
+// TEXT.defineFilter('bar', function (input) {
+//   return 'bar: ' + input
+// })
 
 describe('eval README example', function () {
 
-  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ')({ foo: 'foobar' }), 'foobar' )
+  var _TEXT = conText()
 
-  assert.strictEqual( TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' )
+  assert.strictEqual( _TEXT.eval(' foo ? foo : \'bar\' ')({ foo: 'foobar' }), 'foobar' )
 
-  assert.strictEqual( TEXT.eval(' $foo ? $foo : \'bar\' ', { $foo: 'foobar' }), 'foobar' )
+  assert.strictEqual( _TEXT.eval(' foo ? foo : \'bar\' ', { foo: 'foobar' }), 'foobar' )
+
+  assert.strictEqual( _TEXT.eval(' $foo ? $foo : \'bar\' ', { $foo: 'foobar' }), 'foobar' )
 
 })
 
 describe('eval 1 filter', function () {
+
+  var _TEXT = conText()
+
+  _TEXT.defineFilter('foo', function (input) {
+    return 'foo: ' + input
+  })
+
+  _TEXT.defineFilter('bar', function (input) {
+    return 'bar: ' + input
+  })
 
   var expression,
       expressions = {
@@ -51,7 +61,7 @@ describe('eval 1 filter', function () {
   for( expression in expressions ) {
     it('eval(expression, data): ' + expression, function () {
 
-      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 )
+      assert.deepEqual( _TEXT.eval(expression, data), expressions[expression].result_1 )
 
     })
   }
@@ -59,7 +69,7 @@ describe('eval 1 filter', function () {
   for( expression in expressions ) {
     it('eval(expression)(data): ' + expression, function () {
 
-      var evalGetter = TEXT.eval(expression)
+      var evalGetter = _TEXT.eval(expression)
 
       assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
 
@@ -69,6 +79,16 @@ describe('eval 1 filter', function () {
 })
 
 describe('eval 2 filters', function () {
+
+  var _TEXT = conText()
+
+  _TEXT.defineFilter('foo', function (input) {
+    return 'foo: ' + input
+  })
+
+  _TEXT.defineFilter('bar', function (input) {
+    return 'bar: ' + input
+  })
 
   var expression,
       expressions = {
@@ -105,7 +125,7 @@ describe('eval 2 filters', function () {
   for( expression in expressions ) {
     it('eval(expression, data): ' + expression, function () {
 
-      assert.deepEqual( TEXT.eval(expression, data), expressions[expression].result_1 )
+      assert.deepEqual( _TEXT.eval(expression, data), expressions[expression].result_1 )
 
     })
   }
@@ -113,7 +133,7 @@ describe('eval 2 filters', function () {
   for( expression in expressions ) {
     it('eval(expression)(data): ' + expression, function () {
 
-      var evalGetter = TEXT.eval(expression)
+      var evalGetter = _TEXT.eval(expression)
 
       assert.deepEqual( evalGetter(data), expressions[expression].result_1 )
 
@@ -122,19 +142,21 @@ describe('eval 2 filters', function () {
 
 })
 
-TEXT.defineFilter('fooFirstName', function (input, user) {
-  return input + ': ' + user.first_name
-})
-
-TEXT.defineFilter('fooLastName', function (input, user) {
-  return input + ': ' + user.last_name
-})
-
-TEXT.defineFilter('fooFullName', function (input, user) {
-  return input + ': ' + user.first_name + ' ' + user.last_name
-})
-
 describe('eval 1 filter with scope', function () {
+
+  var _TEXT = conText()
+
+  _TEXT.defineFilter('fooFirstName', function (input, user) {
+    return input + ': ' + user.first_name
+  })
+  
+  _TEXT.defineFilter('fooLastName', function (input, user) {
+    return input + ': ' + user.last_name
+  })
+  
+  _TEXT.defineFilter('fooFullName', function (input, user) {
+    return input + ': ' + user.first_name + ' ' + user.last_name
+  })
 
   var expressions = {
         ' foo.bar | fooFirstName: user ': {
@@ -159,7 +181,7 @@ describe('eval 1 filter with scope', function () {
   for( var expression in expressions ) {
     it(expression, function () {
 
-      var evalGetter = TEXT.eval(expression)
+      var evalGetter = _TEXT.eval(expression)
 
       assert.deepEqual( evalGetter(data, { user: user }), expressions[expression].result_1 )
 
@@ -169,6 +191,20 @@ describe('eval 1 filter with scope', function () {
 })
 
 describe('eval 2 filters with scope', function () {
+
+  var _TEXT = conText()
+
+  _TEXT.defineFilter('fooFirstName', function (input, user) {
+    return input + ': ' + user.first_name
+  })
+  
+  _TEXT.defineFilter('fooLastName', function (input, user) {
+    return input + ': ' + user.last_name
+  })
+  
+  _TEXT.defineFilter('fooFullName', function (input, user) {
+    return input + ': ' + user.first_name + ' ' + user.last_name
+  })
 
   var expressions = {
         ' foo.bar | fooFirstName:{ first_name: first_name } | fooLastName:{ last_name: last_name } ': {
@@ -190,7 +226,7 @@ describe('eval 2 filters with scope', function () {
   for( var expression in expressions ) {
     it(expression, function () {
 
-      var evalGetter = TEXT.eval(expression)
+      var evalGetter = _TEXT.eval(expression)
 
       assert.deepEqual( evalGetter(data, user), expressions[expression].result_1 )
 
