@@ -6,10 +6,12 @@ var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../con-text') : window.conText
 
+var interpolateProcessor = typeof exports === 'object' && typeof module !== 'undefined' ?
+    require('../interpolate-processor') : window.interpolateProcessor
+
 var TEXT = conText()
 
-var interpolateProcessor = require('../interpolate-processor'),
-    fooProcessor = function () {
+var fooProcessor = function () {
       return function (data) {
         return 'foo: ' + data.foo
       }
