@@ -2,12 +2,12 @@
 var _evalExpression = require('./eval')
 var interpolateProcessor = require('./interpolate-processor')
 
-module.exports = textContext
+module.exports = conText
 
-function textContext (context) {
+function conText (_TEXT) {
   var filter_definitions = {}
 
-  context = context || {}
+  _TEXT = _TEXT || {}
 
   function defineFilter (name, filterFn) {
     filter_definitions[name] = filterFn
@@ -85,18 +85,18 @@ function textContext (context) {
     return processFilters( getValue(_scope), _filters_scope || _scope )
   }
 
-  context.interpolate = interpolateProcessor(evalExpression)
+  _TEXT.interpolate = interpolateProcessor(evalExpression)
 
-  context.eval = evalExpression
-  context.parseExpression = parseExpression
+  _TEXT.eval = evalExpression
+  _TEXT.parseExpression = parseExpression
 
-  context.defineFilter = defineFilter
-  context.processFilter = processFilter
+  _TEXT.defineFilter = defineFilter
+  _TEXT.processFilter = processFilter
 
-  context.evalFilter = evalFilter
-  context.evalFilters = evalFilters
+  _TEXT.evalFilter = evalFilter
+  _TEXT.evalFilters = evalFilters
 
-  context.createConText = textContext
+  _TEXT.createConText = conText
 
-  return context
+  return _TEXT
 }
