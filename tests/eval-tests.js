@@ -34,6 +34,18 @@ describe('eval no filters', function () {
 
   })
 
+  it('get d undefined, scope', function () {
+
+    assert.strictEqual( evalExpression(' d ', {}), undefined )
+
+  })
+
+  it('get d, scope', function () {
+
+    assert.strictEqual( evalExpression(' d ', { d: 'foo' }), 'foo' )
+
+  })
+
 })
 
 describe('eval errors', function () {
