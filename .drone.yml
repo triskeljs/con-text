@@ -6,4 +6,5 @@ steps:
 - name: test
   image: nitrojs/node-karma:0.7.0
   commands:
+  - npm install
   - make test
