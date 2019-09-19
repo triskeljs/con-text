@@ -4,7 +4,7 @@ var assert = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('chai').assert : window.assert
 
 var conText = typeof exports === 'object' && typeof module !== 'undefined' ?
-    require('../con-text') : window.conText
+    require('../src/con-text') : window.conText
 
 var interpolateProcessor = typeof exports === 'object' && typeof module !== 'undefined' ?
     require('../interpolate-processor') : window.interpolateProcessor
@@ -54,8 +54,22 @@ var expression,
       'pre_text {{ bar.foo | bar }} post_text': {
         result_1: 'pre_text bar: barfoo post_text',
       },
+      [`pre_text {{ foobar ? ('foo' + foobar) : 'bar' }} post_text`]: {
+        result_1: 'pre_text foofoobar post_text',
+      },
+      [`pre_text {{ barfoo ? ('foo' + foobar) : 'bar' }} post_text`]: {
+        result_1: 'pre_text bar post_text',
+      },
+      [`pre_text {{ is_submitting ? 'challenges.document_id.cta_verifying' : 'challenges.document_id.cta' }} post_text`]: {
+        result_1: 'pre_text challenges.document_id.cta post_text',
+      },
+      [` challenges.document_id.{{ product_type }}.{{ is_submitting ? 'description_verifying' : 'description' }} `]: {
+        result_1: ' challenges.document_id.instalments.description ',
+      },
     },
     data = {
+      product_type: 'instalments',
+      foobar: 'foobar',
       foo: { bar: 'foobar' },
       bar: { foo: 'barfoo' },
     }

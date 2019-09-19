@@ -23,6 +23,10 @@
   },
   "homepage": "https://github.com/triskeljs/con-text#readme",
   "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/register": "^7.6.0",
     "chai": "^4.2.0",
     "eslint": "^5.4.0",
     "mocha": "^5.2.0"

@@ -4,14 +4,11 @@
 install:
 	npm install
 
-eslint:
-	$(shell npm bin)/eslint eval.js
-	$(shell npm bin)/eslint interpolate-processor.js
-	$(shell npm bin)/eslint con-text.js
-	$(shell npm bin)/eslint tests
+lint:
+	npx eslint src
 
-test: install eslint
-	@$(shell npm bin)/mocha tests
+test: lint
+	npx mocha --require @babel/register src/*.test.js
 
 npm.publish:
 	git pull --tags
