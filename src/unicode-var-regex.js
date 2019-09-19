@@ -7,4 +7,4 @@ var ecma_var_next_symbols = /0-9\u0300-\u036f\u0483-\u0487\u0591-\u05bd\u05bf\u0
 
 var match_var = new RegExp('\\.?[' + ecma_var_symbols.source + '][' + ecma_var_symbols.source + ecma_var_next_symbols.source  + ']+', 'g')
 
-module.exports = match_var
+export default match_var

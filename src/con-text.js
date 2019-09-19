@@ -1,6 +1,6 @@
 
-var _evalExpression = require('./eval')
-var interpolateProcessor = require('./interpolate-processor')
+import { evalExpression } from './eval'
+import { interpolateProcessor } from './interpolate-processor'
 
 module.exports = conText
 
@@ -9,35 +9,35 @@ function conText (_TEXT) {
 
   _TEXT = _TEXT || {}
 
-  function defineFilter (name, filterFn) {
+  function _defineFilter (name, filterFn) {
     filter_definitions[name] = filterFn
   }
 
-  function processFilter (name, input, scope) {
+  function _processFilter (name, input, scope) {
     if( !filter_definitions[name] ) throw new Error('filter \'' + name + '\' is not defined')
 
     return filter_definitions[name](input, scope)
   }
 
-  function evalFilter (filter_key) {
+  function _evalFilter (filter_key) {
     filter_key = filter_key.trim()
 
     if( !/:/.test(filter_key) ) {
       return function (input) {
-        return processFilter( filter_key, input )
+        return _processFilter( filter_key, input )
       }
     }
 
     filter_key = filter_key.split(/:(.+)/)
     return (function (filter_name, getData ) {
       return function (input, scope) {
-        return processFilter( filter_name, input, getData(scope || {}) )
+        return _processFilter( filter_name, input, getData(scope || {}) )
       }
-    })( filter_key[0], _evalExpression(filter_key[1]) )
+    })( filter_key[0], evalExpression(filter_key[1]) )
   }
 
-  function evalFilters (filters_list) {
-    var filters_funcs = filters_list.map(evalFilter)
+  function _evalFilters (filters_list) {
+    var filters_funcs = filters_list.map(_evalFilter)
 
     if( !filters_list.length ) return function (result) { return result }
 
@@ -51,7 +51,7 @@ function conText (_TEXT) {
     }
   }
 
-  function parseExpression ( expression ) {
+  function _parseExpression ( expression ) {
     var filters_list = expression.split(' | ')
 
     expression = filters_list.shift()
@@ -59,13 +59,13 @@ function conText (_TEXT) {
     return {
       expression: expression,
       has_filters: filters_list.length > 0,
-      processFilters: evalFilters(filters_list),
+      processFilters: _evalFilters(filters_list),
     }
   }
 
-  function evalExpression (expression, _scope, _filters_scope) {
-    var parsed = parseExpression(expression),
-        getValue = _evalExpression( parsed.expression ),
+  function _evalExpression (expression, _scope, _filters_scope) {
+    var parsed = _parseExpression(expression),
+        getValue = evalExpression( parsed.expression ),
         processFilters = parsed.processFilters
 
     if( _scope === undefined ) {
@@ -85,16 +85,16 @@ function conText (_TEXT) {
     return processFilters( getValue(_scope), _filters_scope || _scope )
   }
 
-  _TEXT.interpolate = interpolateProcessor(evalExpression)
+  _TEXT.interpolate = interpolateProcessor(_evalExpression)
 
-  _TEXT.eval = evalExpression
-  _TEXT.parseExpression = parseExpression
+  _TEXT.eval = _evalExpression
+  _TEXT.parseExpression = _parseExpression
 
-  _TEXT.defineFilter = defineFilter
-  _TEXT.processFilter = processFilter
+  _TEXT.defineFilter = _defineFilter
+  _TEXT.processFilter = _processFilter
 
-  _TEXT.evalFilter = evalFilter
-  _TEXT.evalFilters = evalFilters
+  _TEXT.evalFilter = _evalFilter
+  _TEXT.evalFilters = _evalFilters
 
   _TEXT.createConText = conText
 
