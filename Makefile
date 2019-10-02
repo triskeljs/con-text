@@ -19,6 +19,7 @@ test: lint
 build:
 	rm -rf dist
 	npx babel src --out-dir dist --ignore src/**/*.test.js
+	npx rollup src/con-text.js -c rollup.config.js --output.format umd --output.file dist/con-text.umd.js -n conText
 	cp package.json dist
 	cp README.md dist
 
