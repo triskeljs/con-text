@@ -16,3 +16,12 @@ export function interpolateText (text, processExpression) {
       return stringifyTokens(tokens, processExpression)
     }
 }
+
+export function interpolateProcessor (processExpression) {
+  return function interpolateText (text) {
+    return stringifyTokens(
+      tokenizeExpressions(text),
+      processExpression
+    )
+  }
+}
