@@ -18,7 +18,6 @@ var match_var = /\.?[a-zA-Z_$][0-9a-zA-Z_$]*/g
 export function matchVars (expression, used_vars = Object.create(ecma_keywords) ) {
   return ( removeStrings(expression).match(match_var) || [] )
     .filter(function (var_name) {
-      console.log('var_name', var_name)
       if(
         var_name[0] === '.' // ignoring property invokations
         || used_vars[var_name]  // ignoring already added
