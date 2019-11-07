@@ -1,6 +1,4 @@
 
-import global from './global'
-
 // https://stackoverflow.com/questions/1661197/what-characters-are-valid-for-javascript-variable-names/9337047#9337047
 
 var ecma_keywords = {}
@@ -44,12 +42,12 @@ export function parseExpression (expression, options = {}) {
 }
 
 export function evalExpression (expression, data) {
-  var _parsed = parseExpression(expression, this !== global && { globals: this.globals })
+  var _parsed = parseExpression(expression, this ? { globals: this.globals } : {})
   var _runExpression = Function.apply(null, _parsed.var_names.concat('return (' + _parsed.expression + ');') )
 
   return data
     ? _runExpression.apply(null, _parsed.var_names.map(function (key) { return data[key] }) )
     : function _evalExpression (_data) {
-      return _runExpression.apply(null, _parsed.var_names.map(function (key) { return data[key] }) )
+      return _runExpression.apply(null, _parsed.var_names.map(function (key) { return _data[key] }) )
     }
 }
