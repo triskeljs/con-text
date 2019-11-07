@@ -26,14 +26,14 @@ build:
 		--output.exports named \
 		-n conText
 	npx uglifyjs dist/con-text.umd.js --compress --mangle -o dist/con-text.min.js
-	cp package.json dist
-	cp package-lock.json dist
-	cp README.md dist
 
 npm.publish:
 	git pull --tags
 	npm version ${NPM_VERSION}
 	git push origin $(git_branch) && git push --tags
+	cp package.json dist
+	cp package-lock.json dist
+	cp README.md dist
 	npm publish dist --access public
 
 github.release: export REPOSITORY=triskeljs/con-text
