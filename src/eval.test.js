@@ -43,6 +43,7 @@ var specs_expressions = [
   [` foo ? foo.bar : 'bar' `, `foo`],
   [` foo ? bar : null `, 'foo, bar'],
   [` foo?bar:null `, 'foo, bar'],
+  [` $foo ? _$bar : null `, '$foo, _$bar'],
 
 ]
 
