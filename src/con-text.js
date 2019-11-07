@@ -3,7 +3,18 @@ import { evalExpression } from './eval'
 import { interpolateProcessor } from './interpolate'
 import { filterProcessor, defineFilter, expressionFilterProcessor } from './filters'
 
-export default createConText()
+export default new ConText()
+
+export function ConText (target) {
+  if( target ) {
+    if( this instanceof ConText ) throw new Error('can not use target with constructor')
+    return createConText(target)
+  }
+  
+  if( this instanceof ConText === false ) throw new Error('target missing when not using constructor')
+
+  return createConText(this)
+}
 
 export function createConText (_TEXT = {}) {
 
@@ -44,4 +55,6 @@ export function createConText (_TEXT = {}) {
     return _TEXT
   }
   _TEXT.processFilter = _processFilter
+
+  return _TEXT
 }
