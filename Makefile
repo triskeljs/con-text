@@ -25,6 +25,7 @@ build:
 		--output.file dist/con-text.umd.js \
 		--output.exports named \
 		-n conText
+	npx uglifyjs dist/con-text.umd.js --compress --mangle -o dist/con-text.min.js
 	cp package.json dist
 	cp package-lock.json dist
 	cp README.md dist
