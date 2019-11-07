@@ -1,4 +1,6 @@
 
+// from: https://v8.dev/features/globalthis
+
 export function getGlobalThis () {
   if( typeof globalThis !== 'undefined' ) return globalThis // eslint-disable-line no-undef
   if( typeof self !== 'undefined' ) return self
