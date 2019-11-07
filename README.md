@@ -35,7 +35,7 @@ TEXT.eval(' foo ? foo : 'bar' ', { foo: false });
 ``` js
 
 TEXT.defineFilter('amount', function (amount) {
-  return parseInt(amount) + ',' + amount%100;
+  return parseInt(amount/100) + ',' + amount%100;
 });
 
 TEXT.eval(' price | amount ', { price: 12345 });
@@ -57,11 +57,10 @@ TEXT.eval(' foo | title ', { foo: 'foobar' });
 
 ### Interpolating text
 
-TEXT.defineFilter('amount', function (amount) {
-  return parseInt(amount) + ',' + amount%100;
-});
-
 ``` js
+TEXT.defineFilter('amount', function (amount) {
+  return parseInt(amount/100) + ',' + amount%100;
+});
 
 TEXT.interpolate('current price: {{ price | amount }}€', { price: 12345 });
 // results: 'current price: 123,45€'
