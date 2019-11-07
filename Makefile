@@ -31,7 +31,7 @@ build:
 
 npm.publish:
 	git pull --tags
-	npm version patch
+	npm version ${NPM_VERSION}
 	git push origin $(git_branch) && git push --tags
 	npm publish dist --access public
 
