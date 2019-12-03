@@ -2,7 +2,13 @@
 
 import assert from 'assert'
 
-import { removeStrings, matchVars, parseExpression, evalExpression } from './eval'
+import {
+  removeStrings,
+  matchVars,
+  parseExpression,
+  _getKeyFromData,
+  evalExpression,
+} from './eval'
 
 /** define-property */
 describe(__filename.split('/').pop(), function () {
@@ -114,6 +120,31 @@ describe('eval errors', function () {
     assert.throws(function() { evalExpression(null) }, /expression should be a String/, null, 'null')
 
   })
+
+})
+
+_getKeyFromData
+
+describe('_getKeyFromData', function () {
+
+  function _runTestCase (data, key, result) {
+    it(`${ data }[${ key }] => ${ JSON.stringify(result, null, '') }`, function () {
+      assert.deepStrictEqual(
+        _getKeyFromData(data)(key),
+        result
+      )
+    })
+  }
+  
+  [
+
+    [ { foo: 'bar' }, 'foo', 'bar' ],
+    [ [{ foo: 'bar' }], 'foo', 'bar' ],
+    [ [{ foobar: 'bar' }], 'foo', undefined ],
+    [ [{ foobar: 'bar' }, { barfoo: 'foo' }], 'foo', undefined ],
+    [ [{ foobar: 'bar' }, { foo: 'foo' }], 'foo', 'foo' ],
+
+  ].forEach( (test_case) => _runTestCase.apply(null, test_case) )
 
 })
 

@@ -41,13 +41,26 @@ export function parseExpression (expression, options = {}) {
   }
 }
 
+export function _getKeyFromData (data) {
+  if( data instanceof Array ) return function _getKeyFromArray (key) {
+    for( var i = 0, n = data.length ; i < n ; i++ ) {
+      if( key in data[i] ) return data[i][key]
+    }
+  }
+
+  return function _getKeyFromObject (key) {
+    return data[key]
+  }
+}
+
 export function evalExpression (expression, data) {
   var _parsed = parseExpression(expression, this ? { globals: this.globals } : {})
   var _runExpression = Function.apply(null, _parsed.var_names.concat('return (' + _parsed.expression + ');') )
+  var _getVar = _getKeyFromData(data)
 
   return data
-    ? _runExpression.apply(null, _parsed.var_names.map(function (key) { return data[key] }) )
+    ? _runExpression.apply(null, _parsed.var_names.map(_getVar) )
     : function _evalExpression (_data) {
-      return _runExpression.apply(null, _parsed.var_names.map(function (key) { return _data[key] }) )
+      return _runExpression.apply(null, _parsed.var_names.map(_getVar) )
     }
 }
